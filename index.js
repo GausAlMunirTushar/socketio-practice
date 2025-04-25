@@ -7,10 +7,11 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 io.on("connection", (socket) => {
-	console.log("a user connected");
-	socket.on("disconnect", () => {
-		console.log("user disconnected");
-	});
+	setInterval(() => {
+		const newDate = new Date();
+		const t = newDate.getSeconds();
+		socket.send(t);
+	}, 1000);
 });
 
 // Home route
