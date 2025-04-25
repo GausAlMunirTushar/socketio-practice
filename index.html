@@ -6,16 +6,20 @@
 		<title>Socket IO</title>
 	</head>
 	<body>
-		<h1 id="time"></h1>
+		<input type="text" id="name" />
+		<button onclick="sendMessage()">Send Message</button>
 
 		<script src="/socket.io/socket.io.js"></script>
 
 		<script>
 			const socket = io("http://localhost:4000");
 
-			socket.on("message", (msg) => {
-				document.getElementById("time").innerHTML = msg;
-			});
+			function sendMessage() {
+				const name = document.getElementById("name").value;
+				// alert(name);
+				// socket.emit("message", name);
+				socket.emit("myevent", name);
+			}
 		</script>
 	</body>
 </html>
