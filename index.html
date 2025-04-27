@@ -3,16 +3,89 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Socket IO</title>
+		<title>Socket IO Chat</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+				background-color: #f0f2f5;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.container {
+				background: white;
+				padding: 20px;
+				border-radius: 10px;
+				width: 400px;
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+				display: flex;
+				flex-direction: column;
+				gap: 20px;
+			}
+
+			.message-history {
+				list-style: none;
+				max-height: 300px;
+				overflow-y: auto;
+				padding-right: 10px;
+			}
+
+			.message-history li {
+				background: #e4e6eb;
+				margin-bottom: 10px;
+				padding: 10px;
+				border-radius: 8px;
+				word-break: break-word;
+			}
+
+			section:last-child {
+				display: flex;
+				gap: 10px;
+			}
+
+			#message {
+				flex: 1;
+				padding: 10px;
+				border: 1px solid #ccc;
+				border-radius: 8px;
+				outline: none;
+			}
+
+			button {
+				padding: 10px 20px;
+				background-color: #1877f2;
+				color: white;
+				border: none;
+				border-radius: 8px;
+				cursor: pointer;
+				transition: background 0.3s;
+			}
+
+			button:hover {
+				background-color: #0e5dc2;
+			}
+		</style>
 	</head>
 	<body>
 		<main class="container">
 			<section>
-				<ul></ul>
+				<ul class="message-history"></ul>
 			</section>
 			<section>
-				<input id="message" type="text" />
-				<button onclick="sendMessage()">Send Message</button>
+				<input
+					id="message"
+					type="text"
+					placeholder="Type a message..."
+				/>
+				<button onclick="sendMessage()">Send</button>
 			</section>
 		</main>
 
@@ -22,10 +95,21 @@
 			const socket = io("http://localhost:4000");
 
 			function sendMessage() {
-				let message = document.getElementById("message").value;
-				// alert(message);
-				socket.emit("chat", message);
+				let messageInput = document.getElementById("message");
+				let message = messageInput.value.trim();
+				if (message !== "") {
+					socket.emit("chat", message);
+					messageInput.value = "";
+				}
 			}
+
+			socket.on("chat_message", (data) => {
+				let messageHistory = document.querySelector(".message-history");
+				let li = document.createElement("li");
+				li.innerText = data;
+				messageHistory.appendChild(li);
+				messageHistory.scrollTop = messageHistory.scrollHeight; // Auto-scroll
+			});
 		</script>
 	</body>
 </html>
