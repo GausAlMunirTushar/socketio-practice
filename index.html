@@ -6,12 +6,26 @@
 		<title>Socket IO</title>
 	</head>
 	<body>
-		<div class="container"></div>
+		<main class="container">
+			<section>
+				<ul></ul>
+			</section>
+			<section>
+				<input id="message" type="text" />
+				<button onclick="sendMessage()">Send Message</button>
+			</section>
+		</main>
 
 		<script src="/socket.io/socket.io.js"></script>
 
 		<script>
 			const socket = io("http://localhost:4000");
+
+			function sendMessage() {
+				let message = document.getElementById("message").value;
+				// alert(message);
+				socket.emit("chat", message);
+			}
 		</script>
 	</body>
 </html>
