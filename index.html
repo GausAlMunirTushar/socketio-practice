@@ -77,6 +77,7 @@
 	<body>
 		<main class="container">
 			<section>
+				<h1 id="room"></h1>
 				<ul class="message-history"></ul>
 			</section>
 			<section>
@@ -109,6 +110,10 @@
 				li.innerText = data;
 				messageHistory.appendChild(li);
 				messageHistory.scrollTop = messageHistory.scrollHeight; // Auto-scroll
+			});
+			socket.on("cooking", (data) => {
+				let room = document.getElementById("room");
+				room.innerHTML = data;
 			});
 		</script>
 	</body>

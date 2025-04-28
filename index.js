@@ -16,6 +16,11 @@ io.on("connection", (socket) => {
 	socket.on("chat", (message) => {
 		io.emit("chat_message", message);
 	});
+	socket.join("kitchen_room");
+	const sizeOfRoom = io.sockets.adapter.rooms.get("kitchen_room").size;
+	io.sockets
+		.in("kitchen_room")
+		.emit("cooking", "cooking something on kitchen" + sizeOfRoom);
 });
 // Server setup
 server.listen(4000, () => {
